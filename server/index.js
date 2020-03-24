@@ -18,8 +18,10 @@ io.on('connection', socket => {
 
     if(error) return callback(error);
 
+    //sending to sender client only
     socket.emit('message', {user: 'admin', text: `${user.name}, welcome to the room`})
 
+    //sending to all clients in the same room except the sender
     socket.broadcast.to(user.room).emit('message', {user: 'admin', text: `${user.name} has joined`})
 
     socket.join(user.room);
@@ -34,6 +36,7 @@ io.on('connection', socket => {
     
     callback();
   })
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   })
